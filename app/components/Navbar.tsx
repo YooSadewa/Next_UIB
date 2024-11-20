@@ -14,12 +14,15 @@ export default function Navbar() {
                   <ActiveLink href="/about">About</ActiveLink>
                 </li>
                 <li>
-                  <ActiveLink href="/facility">Facilities</ActiveLink>
+                  <ActiveLink href="/laboratorium">Laboratorium Facilities</ActiveLink>
+                </li>
+                <li>
+                  <ActiveLink href="/network">Network Facilities</ActiveLink>
                 </li>
                 <li>
                   <ActiveLink href="/contact">Contact Me</ActiveLink>
                 </li>
               </ul>
-            </nav>
+    </nav>
   );
 }
