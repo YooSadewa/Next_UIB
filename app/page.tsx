@@ -1,3 +1,5 @@
+import Laboratorium from "./(facility)/fasilitas/page";
+
 export default function Home() {
   return (
       <div>

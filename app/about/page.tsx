@@ -1,11 +1,19 @@
-import Image from "next/image";
-// import NavbarLayout from "../layout";
+// src/app/facility/[[...slug]]/page.tsx
+"use client";
 
-export default function About() {
-  return (
-    <div>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Repellat expedita, iure cum sapiente eum nisi odio commodi at magnam. Eius possimus repellendus repudiandae deserunt corporis maiores voluptatem sequi voluptate odit.
-        
-    </div>
-  );
+import Link from "next/link";
+import { useParams } from "next/navigation";
+
+export default function Page() {
+  const params = useParams();
+    return (
+      <div className="p-4">
+        <h1 className="text-2xl font-bold">Overview Page</h1>
+        <p>Halaman utama overview fasilitas</p>
+        <br />
+        <p><Link href={'/about/1'}>About Us</Link></p>
+
+      </div>
+    );
+
 }
