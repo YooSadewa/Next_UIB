@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function Date() {
   const [data, setData] = useState([]);
@@ -7,13 +8,26 @@ export default function Date() {
   const [selectedYear, setSelectedYear] = useState<string>("0"); // Default tidak ada tahun
   const [selectedStatus, setSelectedStatus] = useState<string>("unknown"); // Default status tidak diketahui
 
+  interface Params {
+    year?: string;
+    month?: string;
+  }
   // Fungsi untuk mengambil data dari API
   const getDate = async (month: string, year: string) => {
     let url = `https://dayoffapi.vercel.app/api`;
-    if (year !== "0") url += `?year=${year}`;
-    if (month !== "0") url += `${year !== "0" ? "&" : "?"}month=${month}`;
-    const res = await fetch(url);
-    return res.json();
+    const params: Params = {};
+
+    if (year !== "0") params.year = year;
+    if (month !== "0") params.month = month;
+
+    try {
+      const response = await axios.get(url, { params });
+      return response.data;
+    } catch (err: any) {
+      throw new Error(
+        err.response?.data?.message || "Terjadi kesalahan saat mengambil data"
+      );
+    }
   };
 
   // Fungsi untuk memformat tanggal
