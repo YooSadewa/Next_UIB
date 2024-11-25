@@ -8,25 +8,24 @@ export default function Date() {
   const [selectedYear, setSelectedYear] = useState<string>("0"); // Default tidak ada tahun
   const [selectedStatus, setSelectedStatus] = useState<string>("unknown"); // Default status tidak diketahui
 
+
   interface Params {
-    year?: string;
-    month?: string;
+    year?: string,
+    month?: string
   }
   // Fungsi untuk mengambil data dari API
-  const getDate = async (month: string, year: string) => {
+  const getDate = async (month:string, year:string) => {
     let url = `https://dayoffapi.vercel.app/api`;
-    const params: Params = {};
-
+    const params : Params = {};
+    
     if (year !== "0") params.year = year;
     if (month !== "0") params.month = month;
-
+    
     try {
       const response = await axios.get(url, { params });
       return response.data;
-    } catch (err: any) {
-      throw new Error(
-        err.response?.data?.message || "Terjadi kesalahan saat mengambil data"
-      );
+    } catch (err:any) {
+      throw new Error(err.response?.data?.message || "Terjadi kesalahan saat mengambil data");
     }
   };
 
