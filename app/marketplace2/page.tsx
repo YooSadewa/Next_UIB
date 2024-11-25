@@ -3,10 +3,12 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 
 interface Product {
-  product_id: number;
-  product_title: string;
-  product_description: string;
-  product_photos: any;
+  productId: any;
+  displayName: string;
+  brandName: string;
+  heroImage: any;
+  altImage: any;
+  currentSku: { salePrice: number; skuId: number };
 }
 
 export default function Home() {
@@ -22,26 +24,22 @@ export default function Home() {
     setLoading(true);
     try {
       const response = await axios.get(
-        "https://real-time-product-search.p.rapidapi.com/search-v2",
+        "https://sephora.p.rapidapi.com/us/products/v2/list",
         {
           params: {
-            q: query,
-            country: "us",
-            language: "en",
-            page: "1",
-            limit: "12",
-            sort_by: "BEST_MATCH",
-            product_condition: "ANY",
+            pageSize: "2",
+            currentPage: "1",
+            categoryId: "cat1080037",
           },
           headers: {
             "x-rapidapi-key":
               "00c82a3b37msh2413fc934c617ebp1fc451jsnee68149a12c7",
-            "x-rapidapi-host": "real-time-product-search.p.rapidapi.com",
+            "x-rapidapi-host": "sephora.p.rapidapi.com",
           },
         }
       );
-      console.log("API Response:", response.data.data.products);
-      setProducts(response.data.data.products);
+      console.log("API Response:", response.data.products);
+      setProducts(response.data.products);
     } catch (error) {
       console.error("Error fetching products:", error);
       setProducts([]);
@@ -51,7 +49,7 @@ export default function Home() {
   };
 
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); 
+    e.preventDefault();
     fetchProducts(searchQuery || "shoes");
   };
 
@@ -64,47 +62,41 @@ export default function Home() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">TokoPatu</h1>
-
-      {/* Search Form */}
-      <form onSubmit={handleSearch} className="mb-8 flex gap-4">
-        <input
-          type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Cari produk..."
-          className="flex-grow border rounded-lg px-4 py-2"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white rounded-lg px-4 py-2 hover:bg-blue-600 transition"
-        >
-          Cari
-        </button>
-      </form>
-
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {Array.isArray(products) &&
-          products.map((product: Product) => (
-            <div
-              key={product.product_id}
-              className="border rounded-lg p-4 hover:shadow-lg transition"
+    <div className="bg-white">
+      <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+        <h2 className="sr-only">Products</h2>
+        {/* <form onSubmit={handleSearch} className="mb-6">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search for products..."
+            className="border rounded px-4 py-2 w-full"
+          />
+        </form> */}
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
+          {products.map((product) => (
+            <a
+              key={product.productId}
+              href={`/marketplace2/${product.productId}/${product.currentSku.skuId}`}
+              className="group"
             >
               <img
-                src={product.product_photos[0]}
-                alt={product.product_title}
-                className="w-full h-[200px] object-contain"
+                alt={product.displayName}
+                src={product.heroImage}
+                className="aspect-square w-full rounded-lg bg-gray-200 object-cover group-hover:opacity-75 xl:aspect-[7/8]"
               />
-              <h1 className="font-semibold text-xl mb-2 text-center">
-                {product.product_title}
-              </h1>
-              <p className="text-center h-[300px] overflow-auto">
-                {product.product_description}
+              <h3 className="mt-4 text-sm text-gray-700">
+                {product.displayName}
+              </h3>
+              <p className="mt-1 text-lg font-medium text-gray-900">
+                {product.currentSku.salePrice
+                  ? product.currentSku.salePrice
+                  : "N/A"}
               </p>
-            </div>
+            </a>
           ))}
+        </div>
       </div>
     </div>
   );
