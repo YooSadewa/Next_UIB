@@ -1,6 +1,5 @@
-"use client"
-
 import React from 'react'
+import ReactDOM from 'react-dom/client'
 import {
   QueryClient,
   QueryClientProvider,
@@ -47,3 +46,4 @@ function Example() {
 }
 
 const rootElement = document.getElementById('root') as HTMLElement
+ReactDOM.createRoot(rootElement).render(<App />)

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "./components/NavbarSlug";
+import Providers from "./providers";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,7 +23,7 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <>
@@ -31,9 +32,9 @@ export default function RootLayout({
           <section>
             <Navbar />
           </section>
-          {children}
+          <Providers>{children}</Providers>
         </body>
       </html>
     </>
-  )
+  );
 }
